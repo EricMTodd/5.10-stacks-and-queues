@@ -15,10 +15,41 @@
 
 using namespace std;
 int evalPostfix(std::queue<char> expression) {
-//
-// insert function here
-//
-return 0;
+    stack<int> operands;
+
+    while (!expression.empty()) {
+        char current = expression.front();
+        expression.pop();
+
+        if (isdigit(current)) {
+            operands.push(current - '0'); // Convert char to int and push onto stack
+        } else if (current == '+' || current == '-' || current == '*' || current == '/') {
+            // Fetch the top two operands from the stack
+            int operand2 = operands.top();
+            operands.pop();
+            int operand1 = operands.top();
+            operands.pop();
+
+            // Perform the operation based on the current operator
+            switch (current) {
+                case '+':
+                    operands.push(operand1 + operand2);
+                    break;
+                case '-':
+                    operands.push(operand1 - operand2);
+                    break;
+                case '*':
+                    operands.push(operand1 * operand2);
+                    break;
+                case '/':
+                    operands.push(operand1 / operand2);
+                    break;
+            }
+        }
+    }
+
+    // The final result is on top of the stack
+    return operands.top();
 }
 
 
